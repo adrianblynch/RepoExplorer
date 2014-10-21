@@ -41,28 +41,27 @@ app.controller("RepoController", ['$scope', 'RepoService', function($scope, Repo
 
 app.service('RepoService', function($http, $q) {
 
-		return {
-			getRepos: getRepos,
-		};
+	return {
+		getRepos: getRepos,
+	};
 
-		function getRepos(username) {
-			var request = $http({
-				method: "get",
-				url: "https://api.github.com/users/" + username + "/repos"
-			});
-			return request.then(handleSuccess, handleError);
-		}
-
-		function handleError(response) {
-			if (! angular.isObject( response.data ) || 	! response.data.message) {
-				return $q.reject("An unknown error occurred.");
-			}
-			return $q.reject(response.data.message);
-		}
-
-		function handleSuccess(response) {
-			return response.data;
-		}
-
+	function getRepos(username) {
+		var request = $http({
+			method: "get",
+			url: "https://api.github.com/users/" + username + "/repos"
+		});
+		return request.then(handleSuccess, handleError);
 	}
-);
+
+	function handleError(response) {
+		if (! angular.isObject( response.data ) || 	! response.data.message) {
+			return $q.reject("An unknown error occurred.");
+		}
+		return $q.reject(response.data.message);
+	}
+
+	function handleSuccess(response) {
+		return response.data;
+	}
+
+});
