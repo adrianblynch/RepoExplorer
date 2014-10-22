@@ -8,13 +8,17 @@
 			float: left;
 			width: 50%;
 		}
+		#repo {
+			float: right;
+			width: 50%;
+		}
 	</style>
 </head>
-<body>
+<body ng-controller="RepoCtrl">
 
 	<h1>Repo Explorer</h1>
 
-	<div id="repos" ng-controller="ReposController">
+	<div id="repos">
 
 		<form ng-submit="loadRepos()">
 			Username on Github:
@@ -29,15 +33,17 @@
 
 		<ul>
 			<li ng-repeat="repo in repos">
-				{{ repo.name }}
-				{{ repo.fork ? '&#9282;' : '' }}
+				<a href="#" ng-click="showRepo(repo)">
+					{{ repo.name }}
+					{{ repo.fork ? '&#9282;' : '' }}
+				</a>
 			</li>
 		</ul>
 
 	</div>
 
-	<div id="repo" ng-controller="RepoController">
-
+	<div id="repo">
+		{{ repo.name }}
 	</div>
 
 	<script src="angular.min.js"></script>

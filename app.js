@@ -1,6 +1,6 @@
 var app = angular.module( "RepoExplorer", [] );
 
-app.controller("ReposController", ['$scope', 'RepoService', function($scope, RepoService) {
+app.controller("RepoCtrl", ['$scope', 'RepoService', function($scope, RepoService) {
 
 	$scope.repos = [];
 	$scope.usernameHistory = [];
@@ -33,21 +33,22 @@ app.controller("ReposController", ['$scope', 'RepoService', function($scope, Rep
 
 		}
 
-	};
+	}
 
 	$scope.loadRepos();
 
 }]);
 
-app.controller("RepoController", ['$scope', 'RepoService', function($scope, RepoService) {
-
-}]);
-
 app.service('RepoService', function($http, $q) {
+
+	return {
+		getRepos: getRepos,
+	};
 
 	function getRepos(username) {
 		var request = $http({
 			method: "get",
+			cache: true,
 			//url: "repos.json"
 			url: "https://api.github.com/users/" + username + "/repos"
 		});
@@ -64,9 +65,5 @@ app.service('RepoService', function($http, $q) {
 	function handleSuccess(response) {
 		return response.data;
 	}
-
-	return {
-		getRepos: getRepos,
-	};
 
 });
