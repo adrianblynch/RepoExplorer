@@ -3,27 +3,42 @@
 <head>
 	<meta charset="utf-8" />
 	<title>RepoExplorer</title>
+	<style>
+		#repos {
+			float: left;
+			width: 50%;
+		}
+	</style>
 </head>
-<body ng-controller="RepoController">
+<body>
 
 	<h1>Repo Explorer</h1>
 
-	<form ng-submit="loadRepos()">
-		Username on Github:
-		<input type="text" ng-model="form.username" />
-		<input type="submit" value="Go" />
-		Recent:
-		<span ng-repeat="entry in usernameHistory track by $index">
-			<a href="#" ng-click="loadRepos(entry)">{{ entry }}</a>
-		</span>
-	</form>
+	<div id="repos" ng-controller="ReposController">
 
-	<ul>
-		<li ng-repeat="repo in repos">
-			{{ repo.name }}
-			{{ repo.fork ? '&#9282;' : '' }}
-		</li>
-	</ul>
+		<form ng-submit="loadRepos()">
+			Username on Github:
+			<input type="text" ng-model="form.username" />
+			<input type="submit" value="Go" />
+			<br />
+			Recent:
+			<span ng-repeat="entry in usernameHistory track by $index">
+				<a href="#" ng-click="loadRepos(entry)">{{ entry }}</a>
+			</span>
+		</form>
+
+		<ul>
+			<li ng-repeat="repo in repos">
+				{{ repo.name }}
+				{{ repo.fork ? '&#9282;' : '' }}
+			</li>
+		</ul>
+
+	</div>
+
+	<div id="repo" ng-controller="RepoController">
+
+	</div>
 
 	<script src="angular.min.js"></script>
 	<script src="app.js"></script>
