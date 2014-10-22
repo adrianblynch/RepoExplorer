@@ -4,6 +4,7 @@ app.controller("RepoCtrl", ['$scope', 'RepoService', function($scope, RepoServic
 
 	$scope.repos = [];
 	$scope.usernameHistory = [];
+	$scope.repo = {};
 
 	$scope.form = {
 		username: "adrianblynch"
@@ -34,6 +35,10 @@ app.controller("RepoCtrl", ['$scope', 'RepoService', function($scope, RepoServic
 		}
 
 	}
+
+	$scope.showRepo = function(repo) {
+		$scope.repo = repo;
+	};
 
 	$scope.loadRepos();
 
