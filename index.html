@@ -31,6 +31,11 @@
 			</span>
 		</form>
 
+		<div>
+			Owner: {{ owner.name }}<br />
+			<img src="{{owner.avatar_url}}" width="100" />
+		</div>
+
 		<ul>
 			<li ng-repeat="repo in repos">
 				<a href="#" ng-click="showRepo(repo)">

@@ -1,10 +1,11 @@
 var app = angular.module( "RepoExplorer", [] );
 
-app.controller("RepoCtrl", ['$scope', 'RepoService', function($scope, RepoService) {
+app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($scope, RepoService, OwnerService) {
 
 	$scope.repos = [];
 	$scope.usernameHistory = [];
 	$scope.repo = {};
+	$scope.owner;
 
 	$scope.form = {
 		username: "adrianblynch"
@@ -24,27 +25,64 @@ app.controller("RepoCtrl", ['$scope', 'RepoService', function($scope, RepoServic
 
 		username = username || $scope.form.username;
 
-		if (username !== '') {
+		if (username !== "") {
 
 			RepoService.getRepos(username).then(function(repos) {
 				$scope.repos = repos;
-				$scope.form.username = '';
+				$scope.loadOwner(username);
+				$scope.form.username = "";
 				storeUsername(username);
 			});
 
 		}
 
-	}
+	};
 
-	$scope.showRepo = function(repo) {
-		$scope.repo = repo;
+	$scope.loadOwner = function(username) {
+
+		if (username !== "") {
+
+			OwnerService.getOwner(username).then(function(owner) {
+				$scope.owner = owner;
+			});
+
+		}
+
 	};
 
 	$scope.loadRepos();
 
 }]);
 
-app.service('RepoService', function($http, $q) {
+app.service("OwnerService", function($http, $q) {
+
+	return {
+		getOwner: getOwner,
+	};
+
+	function getOwner(username) {
+		var request = $http({
+			method: "get",
+			cache: false,
+			url: "https://api.github.com/users/" + username
+		});
+		return request.then(handleSuccess, handleError);
+	}
+
+	function handleError(response) {
+		if (! angular.isObject( response.data) || !response.data.message) {
+			return $q.reject("An unknown error occurred.");
+		}
+		return $q.reject(response.data.message);
+	}
+
+	function handleSuccess(response) {
+		return response.data;
+	}
+
+});
+
+app.service("RepoService", function($http, $q) {
 
 	return {
 		getRepos: getRepos,
