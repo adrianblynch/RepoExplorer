@@ -1,5 +1,5 @@
 [
-	{"name": "Repo 1"},
-	{"name": "Repo 2"},
-	{"name": "Repo 3"}
+	{"name": "Repo 1", "fork": true},
+	{"name": "Repo 2", "fork": false},
+	{"name": "Repo 3", "fork": true}
 ]

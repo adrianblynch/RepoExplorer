@@ -1,11 +1,13 @@
-var app = angular.module( "RepoExplorer", [] );
+var app = angular.module("RepoExplorer", []);
+
+var cacheRequests = false;
 
 app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($scope, RepoService, OwnerService) {
 
 	$scope.repos = [];
 	$scope.usernameHistory = [];
 	$scope.repo = {};
-	$scope.owner;
+	$scope.owner = {};
 
 	$scope.form = {
 		username: "adrianblynch"
@@ -21,7 +23,43 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 		$scope.usernameHistory = history;
 	}
 
-	$scope.loadRepos = function(username) {
+	$scope.loadReposAndOwner = function(username) {
+
+		console.log("loadReposAndOwner(" + username + ")");
+
+		var loadedRepos, loadedOwner;
+
+		username = username || $scope.form.username;
+
+		if (username !== "") {
+
+			RepoService.getRepos(username).then(function(repos) {
+				console.log("Got repos");
+				loadedRepos = repos;
+				done();
+			});
+
+			OwnerService.getOwner(username).then(function(owner) {
+				console.log("Got owner");
+				loadedOwner = owner;
+				done();
+			});
+
+			function done() {
+				if (loadedRepos && loadedOwner) {
+					$scope.repos = loadedRepos;
+					$scope.loadOwner(username);
+					$scope.form.username = "";
+					storeUsername(username);
+					$scope.owner = loadedOwner;
+				}
+			}
+
+		}
+
+	};
+
+	$scope.loadRepos = function(username) { // TODO: Remove
 
 		username = username || $scope.form.username;
 
@@ -38,7 +76,7 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 
 	};
 
-	$scope.loadOwner = function(username) {
+	$scope.loadOwner = function(username) { // TODO: Remove
 
 		if (username !== "") {
 
@@ -50,7 +88,11 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 
 	};
 
-	$scope.loadRepos();
+	$scope.showRepo = function(repo) {
+		$scope.repo = repo;
+	};
+
+	$scope.loadReposAndOwner();
 
 }]);
 
@@ -63,7 +105,8 @@ app.service("OwnerService", function($http, $q) {
 	function getOwner(username) {
 		var request = $http({
 			method: "get",
-			cache: false,
+			cache: cacheRequests,
+			//url: "owner.json"
 			url: "https://api.github.com/users/" + username
 		});
 		return request.then(handleSuccess, handleError);
@@ -91,7 +134,7 @@ app.service("RepoService", function($http, $q) {
 	function getRepos(username) {
 		var request = $http({
 			method: "get",
-			cache: true,
+			cache: cacheRequests,
 			//url: "repos.json"
 			url: "https://api.github.com/users/" + username + "/repos"
 		});

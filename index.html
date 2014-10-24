@@ -12,22 +12,25 @@
 			float: right;
 			width: 50%;
 		}
+		[ng-cloak] {
+			display: none;
+		}
 	</style>
 </head>
-<body ng-controller="RepoCtrl">
+<body ng-controller="RepoCtrl" ng-cloak>
 
 	<h1>Repo Explorer</h1>
 
 	<div id="repos">
 
-		<form ng-submit="loadRepos()">
+		<form ng-submit="loadReposAndOwner()">
 			Username on Github:
 			<input type="text" ng-model="form.username" />
 			<input type="submit" value="Go" />
 			<br />
 			Recent:
 			<span ng-repeat="entry in usernameHistory track by $index">
-				<a href="#" ng-click="loadRepos(entry)">{{ entry }}</a>
+				<a href="#" ng-click="loadReposAndOwner(entry)">{{ entry }}</a>
 			</span>
 		</form>
 
@@ -49,6 +52,9 @@
 
 	<div id="repo">
 		<h2>{{ repo.name }} {{ repo.fork ? '&#9282;' : '' }}</h2>
+		<ul>
+			<li ng-repeat="i in [1,2,3,4,5]">Repo details {{ $index + 1 }}</li>
+		</ul>
 	</div>
 
 	<script src="angular.min.js"></script>
