@@ -25,8 +25,6 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 
 	$scope.loadReposAndOwner = function(username) {
 
-		console.log("loadReposAndOwner(" + username + ")");
-
 		var loadedRepos, loadedOwner;
 
 		username = username || $scope.form.username;
@@ -54,35 +52,6 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 					$scope.owner = loadedOwner;
 				}
 			}
-
-		}
-
-	};
-
-	$scope.loadRepos = function(username) { // TODO: Remove
-
-		username = username || $scope.form.username;
-
-		if (username !== "") {
-
-			RepoService.getRepos(username).then(function(repos) {
-				$scope.repos = repos;
-				$scope.loadOwner(username);
-				$scope.form.username = "";
-				storeUsername(username);
-			});
-
-		}
-
-	};
-
-	$scope.loadOwner = function(username) { // TODO: Remove
-
-		if (username !== "") {
-
-			OwnerService.getOwner(username).then(function(owner) {
-				$scope.owner = owner;
-			});
 
 		}
 
