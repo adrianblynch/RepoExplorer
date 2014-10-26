@@ -46,7 +46,6 @@ app.controller("RepoCtrl", function($scope, RepoService, OwnerService) {
 			function done() {
 				if (loadedRepos && loadedOwner) {
 					$scope.repos = loadedRepos;
-					//$scope.loadOwner(username);
 					$scope.form.username = "";
 					storeUsername(username);
 					$scope.owner = loadedOwner;
