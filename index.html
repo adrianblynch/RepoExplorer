@@ -52,9 +52,18 @@
 
 	<div id="repo">
 		<h2>{{ repo.name }} {{ repo.fork ? '&#9282;' : '' }}</h2>
-		<ul>
-			<li ng-repeat="i in [1,2,3,4,5]">Repo details {{ $index + 1 }}</li>
-		</ul>
+		<dl>
+			<dt>Created</dt>
+			<dd>{{ repo.created_at | date: 'medium' }}</dd>
+			<dt>Updated</dt>
+			<dd>{{ repo.updated_at | date: 'medium' }}</dd>
+			<dt>Forks</dt>
+			<dd>{{ repo.forks_count }}</dd>
+			<dt>Stars</dt>
+			<dd>{{ repo.stargazers_count }}</dd>
+			<dt>Watchers</dt>
+			<dd>{{ repo.watchers_count }}</dd>
+		</dl>
 	</div>
 
 	<script src="angular.min.js"></script>

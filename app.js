@@ -2,7 +2,7 @@ var app = angular.module("RepoExplorer", []);
 
 var cacheRequests = false;
 
-app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($scope, RepoService, OwnerService) {
+app.controller("RepoCtrl", function($scope, RepoService, OwnerService) {
 
 	$scope.repos = [];
 	$scope.usernameHistory = [];
@@ -46,7 +46,7 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 			function done() {
 				if (loadedRepos && loadedOwner) {
 					$scope.repos = loadedRepos;
-					$scope.loadOwner(username);
+					//$scope.loadOwner(username);
 					$scope.form.username = "";
 					storeUsername(username);
 					$scope.owner = loadedOwner;
@@ -59,11 +59,12 @@ app.controller("RepoCtrl", ["$scope", "RepoService", "OwnerService", function($s
 
 	$scope.showRepo = function(repo) {
 		$scope.repo = repo;
+		console.log(repo);
 	};
 
 	$scope.loadReposAndOwner();
 
-}]);
+});
 
 app.service("OwnerService", function($http, $q) {
 
