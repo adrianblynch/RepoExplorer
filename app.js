@@ -82,7 +82,7 @@ app.service("OwnerService", function($http, $q) {
 	}
 
 	function handleError(response) {
-		if (! angular.isObject( response.data) || !response.data.message) {
+		if (!angular.isObject( response.data) || !response.data.message) {
 			return $q.reject("An unknown error occurred.");
 		}
 		return $q.reject(response.data.message);
@@ -111,7 +111,7 @@ app.service("RepoService", function($http, $q) {
 	}
 
 	function handleError(response) {
-		if (! angular.isObject( response.data ) || 	! response.data.message) {
+		if (!angular.isObject( response.data ) || !response.data.message) {
 			return $q.reject("An unknown error occurred.");
 		}
 		return $q.reject(response.data.message);
