@@ -3,6 +3,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>RepoExplorer</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<style>
 		#repos {
 			float: left;
@@ -15,31 +17,38 @@
 		[ng-cloak] {
 			display: none;
 		}
+		body {
+			padding: 0px 10px 10px 10px;
+		}
+		figure {
+			padding-top: 10px;
+		}
 	</style>
 </head>
 <body ng-controller="RepoCtrl" ng-cloak>
 
-	<h1>Repo Explorer</h1>
+	<h1>GitHub Repo Explorer</h1>
 
-	<div id="repos">
+	<form ng-submit="loadReposAndOwner()">
+		Username:
+		<input type="text" ng-model="form.username" />
+		<!-- <input type="submit" value="Go" /> -->
+		<button class="btn btn-xs btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+		Recent:
+		<span ng-repeat="entry in usernameHistory track by $index">
+			<button class="btn btn-xs btn-primary" ng-click="loadReposAndOwner(entry)">{{ entry }}</button>
+		</span>
+	</form>
 
-		<form ng-submit="loadReposAndOwner()">
-			Username on Github:
-			<input type="text" ng-model="form.username" />
-			<input type="submit" value="Go" />
-			<br />
-			Recent:
-			<span ng-repeat="entry in usernameHistory track by $index">
-				<a href="#" ng-click="loadReposAndOwner(entry)">{{ entry }}</a>
-			</span>
-		</form>
+	<figure class="figure">
+		<img src="{{owner.avatar_url}}" width="250" class="figure-img img-fluid img-rounded" alt="{{ owner.name }}">
+		<figcaption class="figure-caption">{{ owner.name }}</figcaption>
+	</figure>
 
-		<div>
-			Owner: {{ owner.name }}<br />
-			<img src="{{owner.avatar_url}}" width="100" />
-		</div>
+	<h2>Repositories</h2>
 
-		<ul>
+	<div>
+		<ul id="repos">
 			<li ng-repeat="repo in repos">
 				<a href="#" ng-click="showRepo(repo)">
 					{{ repo.name }}
@@ -47,23 +56,21 @@
 				</a>
 			</li>
 		</ul>
-
-	</div>
-
-	<div id="repo">
-		<h2>{{ repo.name }} {{ repo.fork ? '&#9282;' : '' }}</h2>
-		<dl>
-			<dt>Created</dt>
-			<dd>{{ repo.created_at | date: 'medium' }}</dd>
-			<dt>Updated</dt>
-			<dd>{{ repo.updated_at | date: 'medium' }}</dd>
-			<dt>Forks</dt>
-			<dd>{{ repo.forks_count }}</dd>
-			<dt>Stars</dt>
-			<dd>{{ repo.stargazers_count }}</dd>
-			<dt>Watchers</dt>
-			<dd>{{ repo.watchers_count }}</dd>
-		</dl>
+		<div id="repo">
+			<h2>{{ repo.name }} {{ repo.fork ? '&#9282;' : '' }}</h2>
+			<dl>
+				<dt>Created</dt>
+				<dd>{{ repo.created_at | date: 'medium' }}</dd>
+				<dt>Updated</dt>
+				<dd>{{ repo.updated_at | date: 'medium' }}</dd>
+				<dt>Forks</dt>
+				<dd>{{ repo.forks_count }}</dd>
+				<dt>Stars</dt>
+				<dd>{{ repo.stargazers_count }}</dd>
+				<dt>Watchers</dt>
+				<dd>{{ repo.watchers_count }}</dd>
+			</dl>
+		</div>
 	</div>
 
 	<script src="angular.min.js"></script>
